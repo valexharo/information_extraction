@@ -2,8 +2,7 @@ from nlp.constants import terminology
 import spacy
 from spacy.tokens import Doc, Span
 from spacy.matcher import Matcher
-from spacy import displacy
-from spacy.symbols import NOUN, PROPN, VERB
+from spacy.symbols import NOUN, VERB
 from itertools import takewhile
 
 SUBJ_list = ['agent', 'csubj', 'csubjpass', 'expl', 'nsubj', 'nsubjpass']
@@ -88,7 +87,7 @@ class TextProcessor():
         return [right for right in tok.rights
                 if right.dep_ == 'conj']
 
-    def subject_verb_object(self, doc, start_i):
+    def subject_verb_object(self, sent, start_i):
         """
         Extract an ordered sequence of subject-verb-object (SVO) triples from a
         spacy-parsed doc. Note that this only works for SVO languages.
@@ -139,23 +138,27 @@ class TextProcessor():
 
     def print_subject_verb_object(self, doc):
 
+        result = []
+
         if doc._.rule_match and len(doc._.rule_match) > 0:
             for match in doc._.rule_match:
                 span = doc[match.start: match.end]  # matched span
-                sent = span.sent  # sentence containing matched span
-                # match_ents = [{'start': span.start_char - sent.start_char,
-                #               'end': span.end_char - sent.start_char,
-                #               'label': nlp.vocab.strings[match.label]}]
-
-                # displacy.render([{'text': sent.text, 'ents': match_ents}], style='ent', manual=True, jupyter=True)
+                sent = span.sent
 
                 start_i = sent[0].i
                 for info in self.subject_verb_object(sent, start_i):
-                    print("Tema:\t{}\nSujeto:\t{}\nVerbo:\t{}\nObjeto:\t{}".format(
+
+                    result.append({"topic": span.text, "subject": info[0].text, 'verb': info[1].text,
+                                   'object': info[2].text})
+
+                    print("Topic:\t{}\nSuject:\t{}\nVerb:\t{}\nObjet:\t{}".format(
                         span.text,
                         info[0].text,
                         info[1].text,
                         info[2].text))
+
+        return result
+
 
 class MyMatcher():
 
