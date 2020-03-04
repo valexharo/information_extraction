@@ -17,8 +17,8 @@ class New:
         try:
             news_open = urllib.request.urlopen(self.url)
             news_soup = BeautifulSoup(news_open, "html.parser")
-            news_para = news_soup.find_all("p", text=True)
 
+            news_para = [obj for obj in news_soup.find_all('p')]
             for item in news_para:
                 # SPLIT WORDS, JOIN WORDS TO REMOVE EXTRA SPACES
                 para_text = (' ').join((item.text).split())
@@ -34,7 +34,7 @@ class New:
 
 if __name__ == '__main__':
     # Test to get data for one new
-    new = New("https://ct.moreover.com/?a=40228068970&p=56s&v=1&x=FUM5V7xqABx6zWPE8HPt2Q")
+    new = New("https://ct.moreover.com/?a=40227733849&p=56s&v=1&x=pnlrmdTmE4Pn9t3hehAb_w")
 
     new.processText()
     print(f"Title: {new.title} \nURL: {new.url}")
