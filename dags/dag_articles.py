@@ -39,16 +39,17 @@ class New:
         except urllib.error.HTTPError:
             logging.error(f"HTTPError: The url {self.url} haven't been gotten")
 
-def processFile(file_path='data/articles_201909.csv'):
+def processFile(file_path='/home/ubuntu/information_extraction/data/articles_201909.csv'):
     # Read the file to get the URLS
     list_news = []
     list_urls = pd.read_csv(file_path)
     for url in list(list_urls["url"]):
+        logging.info(f"Processing the url{url}")
         article = New(url)
         article.processText()
         list_news.append(article.content)
     df = pd.DataFrame(list_news, columns=["content"])
-    df.to_csv('data/output_articles.csv')
+    df.to_csv('/home/ubuntu/information_extraction/data/output_articles.csv')
 
 
 
