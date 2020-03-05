@@ -17,13 +17,13 @@ class New:
         self.content = None
         self.title = None
 
-    def processText(self, url):
+    def processText(self):
 
         # EMPTY LIST TO STORE PROCESSED TEXT
         self.content = ""
 
         try:
-            news_open = urllib.request.urlopen(url)
+            news_open = urllib.request.urlopen(self.url)
             news_soup = BeautifulSoup(news_open, "html.parser")
 
             news_para = [obj for obj in news_soup.find_all('p')]
@@ -39,16 +39,16 @@ class New:
         except urllib.error.HTTPError:
             logging.error(f"HTTPError: The url {self.url} haven't been gotten")
 
-    def processFile(self, file_path='data/articles_201909.csv'):
-        # Read the file to get the URLS
-        list_news = []
-        list_urls = pd.read_csv(file_path)
-        for url in list(list_urls["url"]):
-            article = New(url)
-            article.processText()
-            list_news.append(article.content)
-        df = pd.DataFrame(list_news, columns=["content"])
-        df.to_csv('data/output_articles.csv')
+def processFile(file_path='data/articles_201909.csv'):
+    # Read the file to get the URLS
+    list_news = []
+    list_urls = pd.read_csv(file_path)
+    for url in list(list_urls["url"]):
+        article = New(url)
+        article.processText()
+        list_news.append(article.content)
+    df = pd.DataFrame(list_news, columns=["content"])
+    df.to_csv('data/output_articles.csv')
 
 
 
