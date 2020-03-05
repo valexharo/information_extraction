@@ -3,5 +3,3 @@ git+ssh://git@bitbucket.org/datamaran/dmaws.git
 git+ssh://git@bitbucket.org/datamaran/dmconn.git
 git+ssh://git@bitbucket.org/datamaran/dmutils.git
 wordcloud
-beautifulsoup4
-pandas
