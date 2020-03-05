@@ -76,7 +76,7 @@ end = DummyOperator(
 run_this = PythonOperator(
     task_id='get_content',
     provide_context=True,
-    python_callable=New.processFile(),
+    python_callable=processFile,
     dag=dag,
 )
 
