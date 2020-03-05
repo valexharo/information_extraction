@@ -17,13 +17,13 @@ class New:
         self.content = None
         self.title = None
 
-    def processText(self):
+    def processText(self, url):
 
         # EMPTY LIST TO STORE PROCESSED TEXT
         self.content = ""
 
         try:
-            news_open = urllib.request.urlopen(self.url)
+            news_open = urllib.request.urlopen(url)
             news_soup = BeautifulSoup(news_open, "html.parser")
 
             news_para = [obj for obj in news_soup.find_all('p')]
