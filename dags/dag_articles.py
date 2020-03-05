@@ -4,7 +4,6 @@ import urllib.request
 import logging
 import pandas as pd
 
-
 from airflow.utils.dates import days_ago
 
 from airflow.models import DAG
@@ -81,4 +80,11 @@ run_this = PythonOperator(
     dag=dag,
 )
 
-start >> run_this >> end
+nlp_task = BashOperator(
+    task_id= "nlp_process",
+    bash_command="/home/ubuntu/information_extraction/documents_retrieval.py",
+    retry=1,
+    email_on_failure=True
+)
+
+start >> run_this >> nlp_task >> end
