@@ -16,7 +16,7 @@ args = {
 dag = DAG(
     dag_id='process_articles',
     default_args=args,
-    schedule_interval=None,
+    schedule_interval='@daily',
     tags=['example']
 )
 
